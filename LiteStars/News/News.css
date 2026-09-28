@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@500;600;700&display=swap');
-
 :root {
 	color-scheme: light;
 	--ink: #17211d;
@@ -16,20 +14,22 @@
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
+html, body { min-height: 100%; }
 
 body {
 	margin: 0;
 	background: var(--paper);
 	color: var(--ink);
 	font-family: var(--sans);
+	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 }
 
 a { color: inherit; text-decoration: none; }
 
 .topbar {
-	height: 74px;
-	padding: 0 7.2vw;
+	height: calc(74px + env(safe-area-inset-top));
+	padding: env(safe-area-inset-top) 7.2vw 0;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -73,6 +73,10 @@ a { color: inherit; text-decoration: none; }
 
 .topbar-status { display: flex; align-items: center; gap: 9px; color: #c1c9c2; }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); }
+.topbar-actions { display: flex; align-items: center; gap: 22px; }
+.exit-button { display: inline-flex; height: 38px; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #536058; background: transparent; color: #f5f5ed; font: 600 11px var(--sans); cursor: pointer; }
+.exit-button:hover { border-color: var(--lime); background: var(--lime); color: var(--ink); }
+.exit-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 main { max-width: 1440px; margin: 0 auto; padding: 0 7.2vw; }
 
@@ -176,7 +180,7 @@ h2 { margin: 0; font-family: var(--serif); font-size: 28px; font-weight: 600; }
 .news-content ul { margin: 6px 0; padding-left: 19px; }
 .news-content li { padding-left: 3px; }
 .news-content strong { color: var(--ink); font-weight: 800; }
-.article-toggle { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 0; border: 0; background: none; color: var(--ink); font: 700 11px var(--sans); cursor: pointer; }
+.article-toggle { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; margin-top: 12px; padding: 0 4px; border: 0; background: none; color: var(--ink); font: 700 12px var(--sans); cursor: pointer; }
 .article-toggle:hover { color: #6b813a; }
 .article-toggle svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; transition: transform 180ms ease; }
 .news-card.is-open .article-toggle svg { transform: rotate(180deg); }
@@ -203,7 +207,7 @@ h2 { margin: 0; font-family: var(--serif); font-size: 28px; font-weight: 600; }
 	align-items: center;
 	justify-content: space-between;
 	gap: 20px;
-	padding: 20px 7.2vw;
+	padding: 20px 7.2vw calc(20px + env(safe-area-inset-bottom));
 	background: var(--ink);
 	color: #d7ddd5;
 	font-size: 11px;
@@ -214,13 +218,19 @@ h2 { margin: 0; font-family: var(--serif); font-size: 28px; font-weight: 600; }
 .footer-year { color: #a8b2aa; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
 
+:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+button, a, select { -webkit-tap-highlight-color: transparent; }
+
 @keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 700px) {
-	.topbar { height: 64px; padding: 0 22px; }
-	main { padding: 0 22px; }
+	.topbar { height: calc(64px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) max(18px, calc(18px + env(safe-area-inset-right))) 0 max(18px, calc(18px + env(safe-area-inset-left))); }
+	.exit-button { min-height: 44px; padding: 0 12px; }
+	.topbar-actions { gap: 0; }
+	.topbar-status { display: none; }
+	main { padding: 0 max(18px, calc(18px + env(safe-area-inset-right))) 0 max(18px, calc(18px + env(safe-area-inset-left))); }
 	.masthead { min-height: 390px; padding-top: 57px; }
 	h1 { position: relative; z-index: 1; margin-top: 26px; font-size: 47px; }
 	.intro { max-width: 230px; font-size: 13px; line-height: 1.8; }
@@ -231,15 +241,28 @@ h2 { margin: 0; font-family: var(--serif); font-size: 28px; font-weight: 600; }
 	.news-section { padding: 39px 0 62px; }
 	.section-heading { align-items: flex-start; flex-direction: column; margin-bottom: 18px; }
 	.news-controls { width: 100%; }
-	.search-field { flex: 1; width: auto; }
+	.search-field { flex: 1; width: auto; height: 44px; }
+	.search-field input { font-size: 16px; }
+	.news-controls select, .refresh-button { height: 44px; }
+	.refresh-button { width: 44px; flex: 0 0 44px; }
 	.news-card { grid-template-columns: 1fr; gap: 13px; padding: 20px; }
 	.news-card:first-child { padding-top: 18px; }
+	.news-card, .masthead { animation: none; }
 	.news-meta { flex-direction: row; align-items: center; gap: 10px; }
 	.news-source { padding: 4px 7px; }
 	.news-title { margin-bottom: 8px; font-size: 18px; }
-	.news-excerpt, .news-content { font-size: 12px; }
-	.site-footer { align-items: flex-start; flex-direction: column; gap: 10px; padding: 23px 22px; }
-	.footer-year { position: absolute; right: 22px; }
+	.news-excerpt, .news-content { font-size: 14px; }
+	.site-footer { position: relative; align-items: flex-start; flex-direction: column; gap: 10px; padding: 23px max(18px, calc(18px + env(safe-area-inset-right))) calc(23px + env(safe-area-inset-bottom)) max(18px, calc(18px + env(safe-area-inset-left))); }
+	.footer-year { position: absolute; top: 25px; right: max(18px, calc(18px + env(safe-area-inset-right))); }
+}
+
+@media (max-width: 360px) {
+	.topbar { padding-right: max(14px, calc(14px + env(safe-area-inset-right))); padding-left: max(14px, calc(14px + env(safe-area-inset-left))); }
+	main { padding-right: max(14px, calc(14px + env(safe-area-inset-right))); padding-left: max(14px, calc(14px + env(safe-area-inset-left))); }
+	h1 { font-size: 40px; }
+	.news-card { padding: 17px; }
+	.news-card:first-child { padding-top: 15px; }
+	.site-footer { padding-right: max(14px, calc(14px + env(safe-area-inset-right))); padding-left: max(14px, calc(14px + env(safe-area-inset-left))); }
 }
 
 @media (prefers-reduced-motion: reduce) {

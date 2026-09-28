@@ -2,9 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#17211d">
     <title>뉴스 | LiteStars</title>
+    
     <link rel="stylesheet" href="News.css">
     <script src="News.js" defer></script>
 </head>
@@ -14,7 +15,13 @@
             <span class="wordmark-mark" aria-hidden="true">L</span>
             <span>LITESTARS<span class="wordmark-sub">NEWSROOM</span></span>
         </a>
-        <div class="topbar-status"><span class="status-dot"></span> 개발 소식 아카이브</div>
+        <div class="topbar-actions">
+            <div class="topbar-status"><span class="status-dot"></span> 개발 소식 아카이브</div>
+            <button class="exit-button" id="exit-news" type="button" aria-label="뉴스에서 나가기" title="나가기">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path></svg>
+                <span>나가기</span>
+            </button>
+        </div>
     </header>
 
     <main id="top">
@@ -28,7 +35,7 @@
                 <span class="orbit orbit-one"></span>
                 <span class="orbit orbit-two"></span>
                 <span class="orbit-star">✳</span>
-                <span class="orbit-caption">A UNIVERSE<br>IN PROGRESS</span>
+                <span class="orbit-caption">A LITESTARS<br>IN PROGRESS</span>
             </div>
             <div class="masthead-foot">
                 <span>OFFICIAL UPDATE LOG</span>
@@ -66,7 +73,7 @@
 
     <footer class="site-footer">
         <a class="footer-brand" href="#top">LITESTARS <span>NEWSROOM</span></a>
-        <span>계속해서 펼쳐질 우주, 다음 소식에서 만나요.</span>
+        <span>계속해서 펼쳐질 LiteStars의 소식, 다음 소식에서 만나요.</span>
         <span class="footer-year">© LITESTARS</span>
     </footer>
 </body>

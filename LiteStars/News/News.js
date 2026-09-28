@@ -5,8 +5,17 @@ const feedCount = document.querySelector('#feed-count');
 const searchInput = document.querySelector('#news-search');
 const sortSelect = document.querySelector('#news-sort');
 const refreshButton = document.querySelector('#refresh-news');
+const exitButton = document.querySelector('#exit-news');
 
 let articles = [];
+
+function handleExit() {
+	if (window.Unity) {
+		window.Unity.call('close');
+	} else {
+		window.open('https://litestar.pages.dev/', '_self');
+	}
+}
 
 function formatDate(value) {
 	const date = new Date(value);
@@ -112,8 +121,7 @@ function renderNews() {
 		return sortSelect.value === 'newest' ? difference : -difference;
 	});
 	const filtered = sorted.filter((article) => {
-		const searchable = `${article.title} ${article.content} ${article.source}`.toLocaleLowerCase('ko');
-		return searchable.includes(query);
+		return article.searchable.includes(query);
 	});
 
 	feedCount.textContent = `${articles.length}개의 소식`;
@@ -146,12 +154,11 @@ function renderNews() {
 		title.textContent = article.title || '제목 없는 뉴스';
 		const excerpt = document.createElement('p');
 		excerpt.className = 'news-excerpt';
-		const plainText = getPlainText(article.content);
-		excerpt.textContent = plainText.length > 220 ? `${plainText.slice(0, 220)}...` : plainText;
+		excerpt.textContent = article.plainText.length > 220 ? `${article.plainText.slice(0, 220)}...` : article.plainText;
 
 		const content = document.createElement('div');
 		content.className = 'news-content';
-		renderArticleContent(content, article.content);
+		let contentRendered = false;
 
 		const toggle = document.createElement('button');
 		toggle.type = 'button';
@@ -160,6 +167,10 @@ function renderNews() {
 		toggle.innerHTML = '전문 보기 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>';
 		toggle.addEventListener('click', () => {
 			const isOpen = card.classList.toggle('is-open');
+			if (isOpen && !contentRendered) {
+				renderArticleContent(content, article.content);
+				contentRendered = true;
+			}
 			toggle.setAttribute('aria-expanded', String(isOpen));
 			toggle.firstChild.textContent = isOpen ? '접기 ' : '전문 보기 ';
 		});
@@ -186,12 +197,19 @@ async function loadNews() {
 		if (!response.ok) throw new Error(`HTTP ${response.status}`);
 		const data = await response.json();
 		if (!Array.isArray(data.newsList)) throw new Error('뉴스 목록 형식이 올바르지 않습니다.');
-		articles = data.newsList.map((item) => ({
-			title: item.t?.ko || item.t?.en || '',
-			content: item.c?.ko || item.c?.en || '',
-			d: item.d || '',
-			source: item.g || 'LiteStars'
-		}));
+		articles = data.newsList.map((item) => {
+			const title = item.t?.ko || item.t?.en || '';
+			const content = item.c?.ko || item.c?.en || '';
+			const source = item.g || 'LiteStars';
+			return {
+				title,
+				content,
+				d: item.d || '',
+				source,
+				plainText: getPlainText(content),
+				searchable: `${title} ${content} ${source}`.toLocaleLowerCase('ko')
+			};
+		});
 		renderNews();
 	} catch (error) {
 		console.error('뉴스를 불러오지 못했습니다.', error);
@@ -206,4 +224,5 @@ async function loadNews() {
 searchInput.addEventListener('input', renderNews);
 sortSelect.addEventListener('change', renderNews);
 refreshButton.addEventListener('click', loadNews);
+exitButton.addEventListener('click', handleExit);
 loadNews();
