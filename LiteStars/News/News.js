@@ -2,9 +2,6 @@ const NEWS_URL = 'https://litestar.pages.dev/api/news.json';
 
 const newsList = document.querySelector('#news-list');
 const feedCount = document.querySelector('#feed-count');
-const searchInput = document.querySelector('#news-search');
-const sortSelect = document.querySelector('#news-sort');
-const refreshButton = document.querySelector('#refresh-news');
 const exitButton = document.querySelector('#exit-news');
 
 let articles = [];
@@ -115,20 +112,14 @@ function showEmptyState(title, message) {
 }
 
 function renderNews() {
-	const query = searchInput.value.trim().toLocaleLowerCase('ko');
-	const sorted = [...articles].sort((left, right) => {
-		const difference = new Date(right.d).getTime() - new Date(left.d).getTime();
-		return sortSelect.value === 'newest' ? difference : -difference;
+	const sorted = [...articles].sort(() => {
+		return 'newest';
 	});
 	const filtered = sorted.filter((article) => {
-		return article.searchable.includes(query);
+		return article.searchable;
 	});
 
 	feedCount.textContent = `${articles.length}개의 소식`;
-	if (filtered.length === 0) {
-		showEmptyState(query ? '검색 결과가 없어요' : '아직 등록된 뉴스가 없어요', query ? '다른 검색어로 다시 찾아보세요.' : '새로운 소식이 올라오면 이곳에 표시됩니다.');
-		return;
-	}
 
 	const fragment = document.createDocumentFragment();
 	filtered.forEach((article, index) => {
@@ -183,7 +174,7 @@ function renderNews() {
 }
 
 async function loadNews() {
-	refreshButton.disabled = true;
+
 	newsList.setAttribute('aria-busy', 'true');
 	if (articles.length === 0) {
 		const loading = document.createElement('div');
@@ -217,12 +208,8 @@ async function loadNews() {
 		feedCount.textContent = '연결 오류';
 	} finally {
 		newsList.setAttribute('aria-busy', 'false');
-		refreshButton.disabled = false;
 	}
 }
 
-searchInput.addEventListener('input', renderNews);
-sortSelect.addEventListener('change', renderNews);
-refreshButton.addEventListener('click', loadNews);
 exitButton.addEventListener('click', handleExit);
 loadNews();

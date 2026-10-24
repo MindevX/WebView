@@ -1,11 +1,9 @@
 const SHOP_URL = 'https://litestar.pages.dev/api/shop.json';
-const LITER_DATA_URL = '../LiterData';
+const LITER_DATA_URL = './LiterData';
 
 const offerList = document.querySelector('#offer-list');
 const feedCount = document.querySelector('#feed-count');
-const searchInput = document.querySelector('#offer-search');
 const categoryFilters = document.querySelector('#category-filters');
-const refreshButton = document.querySelector('#refresh-offers');
 const exitButton = document.querySelector('#exit-news');
 const detailDialog = document.querySelector('#offer-detail');
 const detailContent = document.querySelector('#detail-content');
@@ -46,7 +44,7 @@ function formatDate(value) {
 
 function getOfferPeriod(offer) {
 	if (!offer.start && !offer.end) return '상시 판매';
-	return `${formatDate(offer.start)} - ${formatDate(offer.end)}`;
+	return `${formatDate(offer.start)} ~ ${formatDate(offer.end)}`;
 }
 
 function getRewardLabel(reward) {
@@ -133,11 +131,8 @@ function renderCategoryFilters() {
 
 function renderOfferCard(offer) {
 	const card = makeElement('article', 'offer-card');
-	const art = makeElement('div', 'offer-art');
-	art.setAttribute('aria-hidden', 'true');
-	art.append(makeElement('span', 'offer-art-mark', '✳'));
 	const category = makeElement('span', 'offer-category', offer.category || 'General');
-	const title = makeElement('h3', 'offer-title', offer.title || '이름 없는 오퍼');
+	const title = makeElement('h3', 'offer-title', offer.title || '이름 없는 상품');
 	const description = makeElement('p', 'offer-description', offer.desc || '상세 정보가 없습니다.');
 	const rewards = getRewardLabel(offer.reward);
 	const reward = makeElement('p', 'offer-reward', rewards.length ? rewards.join(', ') : '보상 정보 없음');
@@ -148,23 +143,18 @@ function renderOfferCard(offer) {
 	viewButton.type = 'button';
 	viewButton.addEventListener('click', () => openOfferDetail(offer));
 	footer.append(viewButton);
-	card.append(art, category, title, description, reward, cost, footer);
+	card.append(category, title, description, reward, cost, footer);
 	return card;
 }
 
 function renderOffers() {
-	const query = searchInput.value.trim().toLocaleLowerCase('ko');
 	const filtered = offers.filter((offer) => {
 		const category = offer.category || 'General';
 		const matchesCategory = activeCategory === 'all' || category === activeCategory;
 		const searchable = `${offer.title} ${offer.desc} ${category} ${offer.id}`.toLocaleLowerCase('ko');
-		return matchesCategory && searchable.includes(query);
+		return matchesCategory && searchable.includes;
 	});
-	feedCount.textContent = `${filtered.length}개 오퍼`;
-	if (filtered.length === 0) {
-		showEmptyState(query ? '검색 결과가 없어요' : '등록된 오퍼가 없어요', query ? '다른 검색어나 카테고리를 선택해 보세요.' : '새로운 오퍼가 등록되면 이곳에 표시됩니다.');
-		return;
-	}
+	feedCount.textContent = `${filtered.length}개 상품`;
 
 	const groups = new Map();
 	filtered.forEach((offer) => {
@@ -175,7 +165,7 @@ function renderOffers() {
 	const fragment = document.createDocumentFragment();
 	groups.forEach((groupOffers, category) => {
 		const section = makeElement('section', 'offer-category-section');
-		section.setAttribute('aria-label', `${category} 카테고리 오퍼`);
+		section.setAttribute('aria-label', `${category} 카테고리 상품`);
 		const heading = makeElement('div', 'offer-group-heading');
 		heading.append(makeElement('h3', '', category), makeElement('span', '', `${groupOffers.length} offers`));
 		const grid = makeElement('div', 'offer-grid');
@@ -188,7 +178,7 @@ function renderOffers() {
 
 function openOfferDetail(offer) {
 	selectedOffer = offer;
-	const heading = makeElement('h2', 'detail-title', offer.title || '이름 없는 오퍼');
+	const heading = makeElement('h2', 'detail-title', offer.title || '이름 없는 상품');
 	heading.id = 'detail-title';
 	const description = makeElement('p', 'detail-description', offer.desc || '상세 정보가 없습니다.');
 	const info = makeElement('dl', 'detail-info');
@@ -196,7 +186,7 @@ function openOfferDetail(offer) {
 		['카테고리', offer.category || 'General'],
 		['판매 기간', getOfferPeriod(offer)],
 		['비용', getCostLabel(offer.cost)],
-		['오퍼 ID', offer.id || 'ID 없음']
+		['상품 ID', '----']
 	].forEach(([label, value]) => {
 		info.append(makeElement('dt', '', label), makeElement('dd', '', value));
 	});
@@ -221,19 +211,17 @@ function openOfferDetail(offer) {
 function purchaseSelectedOffer() {
 	if (!selectedOffer?.id) return;
 	if (!window.Unity) {
-		detailContent.querySelector('.purchase-notice').textContent = 'Unity 앱 안에서 구매할 수 있어요.';
 		return;
 	}
 	window.Unity.call(JSON.stringify({ action: 'purchase', id: selectedOffer.id }));
-	detailContent.querySelector('.purchase-notice').textContent = '구매 요청을 앱으로 보냈어요.';
+	window.Unity.call('close');
 }
 
 async function loadOffers() {
-	refreshButton.disabled = true;
 	offerList.setAttribute('aria-busy', 'true');
 	if (offers.length === 0) {
 		const loading = makeElement('div', 'loading-state');
-		loading.append(makeElement('span', 'loading-mark', '✳'), makeElement('span', '', '오퍼를 불러오고 있어요'));
+		loading.append(makeElement('span', 'loading-mark', '✳'), makeElement('span', '', '상품를 불러오고 있어요'));
 		offerList.replaceChildren(loading);
 	}
 
@@ -241,7 +229,7 @@ async function loadOffers() {
 		const response = await fetch(SHOP_URL, { cache: 'no-store' });
 		if (!response.ok) throw new Error(`HTTP ${response.status}`);
 		const data = await response.json();
-		if (!Array.isArray(data.list)) throw new Error('오퍼 목록 형식이 올바르지 않습니다.');
+		if (!Array.isArray(data.list)) throw new Error('상품 목록 형식이 올바르지 않습니다.');
 		offers = data.list.map((item) => ({
 			id: item.id || '',
 			title: item.title?.ko || item.title?.en || '',
@@ -256,17 +244,14 @@ async function loadOffers() {
 		renderCategoryFilters();
 		renderOffers();
 	} catch (error) {
-		console.error('상점 오퍼를 불러오지 못했습니다.', error);
-		showEmptyState('오퍼를 불러오지 못했어요', '연결을 확인한 뒤 새로고침 버튼을 눌러주세요.');
+		console.error('상점 상품를 불러오지 못했습니다.', error);
+		showEmptyState('상품를 불러오지 못했어요', '연결을 확인한 뒤 새로고침 버튼을 눌러주세요.');
 		feedCount.textContent = '연결 오류';
 	} finally {
 		offerList.setAttribute('aria-busy', 'false');
-		refreshButton.disabled = false;
 	}
 }
 
-searchInput.addEventListener('input', renderOffers);
-refreshButton.addEventListener('click', loadOffers);
 exitButton.addEventListener('click', handleExit);
 closeDetailButton.addEventListener('click', () => detailDialog.close());
 detailDialog.addEventListener('click', (event) => {

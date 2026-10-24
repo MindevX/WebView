@@ -11,12 +11,7 @@
 </head>
 <body>
     <header class="topbar">
-        <a class="wordmark" href="#top" aria-label="LiteStars 뉴스 홈">
-            <span class="wordmark-mark" aria-hidden="true">L</span>
-            <span>LITESTARS<span class="wordmark-sub">NEWSROOM</span></span>
-        </a>
         <div class="topbar-actions">
-            <div class="topbar-status"><span class="status-dot"></span> 개발 소식 아카이브</div>
             <button class="exit-button" id="exit-news" type="button" aria-label="뉴스에서 나가기" title="나가기">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path></svg>
                 <span>나가기</span>
@@ -26,17 +21,6 @@
 
     <main id="top">
         <section class="masthead" aria-labelledby="page-title">
-            <div class="masthead-copy">
-                <p class="eyebrow"><span>01</span> THE LATEST FROM LITESTARS</p>
-                <h1 id="page-title">LiteStars의<br><em>새로운 소식.</em></h1>
-                <p class="intro">업데이트와 개발 이야기를 가장 먼저 만나보세요.</p>
-            </div>
-            <div class="masthead-art" aria-hidden="true">
-                <span class="orbit orbit-one"></span>
-                <span class="orbit orbit-two"></span>
-                <span class="orbit-star">✳</span>
-                <span class="orbit-caption">A LITESTARS<br>IN PROGRESS</span>
-            </div>
             <div class="masthead-foot">
                 <span>OFFICIAL UPDATE LOG</span>
                 <span id="feed-count">불러오는 중</span>
@@ -44,37 +28,11 @@
         </section>
 
         <section class="news-section" aria-labelledby="news-heading">
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">FROM THE STUDIO</p>
-                    <h2 id="news-heading">최신 뉴스</h2>
-                </div>
-                <div class="news-controls">
-                    <label class="search-field">
-                        <span class="sr-only">뉴스 검색</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
-                        <input id="news-search" type="search" placeholder="뉴스 검색" autocomplete="off">
-                    </label>
-                    <label class="sr-only" for="news-sort">정렬 방식</label>
-                    <select id="news-sort" aria-label="뉴스 정렬">
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된순</option>
-                    </select>
-                    <button class="refresh-button" id="refresh-news" type="button" aria-label="뉴스 새로고침" title="뉴스 새로고침">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"></path><path d="M5.7 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.3-3"></path></svg>
-                    </button>
-                </div>
-            </div>
+            
             <div id="news-list" class="news-list" aria-live="polite" aria-busy="true">
                 <div class="loading-state"><span class="loading-mark">✳</span><span>소식을 불러오고 있어요</span></div>
             </div>
         </section>
     </main>
-
-    <footer class="site-footer">
-        <a class="footer-brand" href="#top">LITESTARS <span>NEWSROOM</span></a>
-        <span>계속해서 펼쳐질 LiteStars의 소식, 다음 소식에서 만나요.</span>
-        <span class="footer-year">© LITESTARS</span>
-    </footer>
 </body>
 </html>

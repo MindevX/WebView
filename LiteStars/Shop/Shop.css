@@ -82,7 +82,6 @@ main { max-width: 1440px; margin: 0 auto; padding: 0 7.2vw; }
 
 .masthead {
 	position: relative;
-	min-height: 424px;
 	padding: 67px 0 30px;
 	overflow: hidden;
 	border-bottom: 1px solid var(--line);

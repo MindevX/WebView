@@ -11,12 +11,7 @@
 </head>
 <body>
     <header class="topbar">
-        <a class="wordmark" href="#top" aria-label="LiteStars 상점 홈">
-            <span class="wordmark-mark" aria-hidden="true">L</span>
-            <span>LITESTARS<span class="wordmark-sub">Shop</span></span>
-        </a>
         <div class="topbar-actions">
-            <div class="topbar-status"><span class="status-dot"></span> 상점 아카이브</div>
             <button class="exit-button" id="exit-news" type="button" aria-label="상점에서 나가기" title="나가기">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path></svg>
                 <span>나가기</span>
@@ -26,17 +21,6 @@
 
     <main id="top">
         <section class="masthead" aria-labelledby="page-title">
-            <div class="masthead-copy">
-                <p class="eyebrow"><span>01</span> LITESTARS OFFER STORE</p>
-                <h1 id="page-title">필요한 걸<br><em>발견해 보세요.</em></h1>
-                <p class="intro">LiteStars의 특별한 패키지와 보상을 만나보세요.</p>
-            </div>
-            <div class="masthead-art" aria-hidden="true">
-                <span class="orbit orbit-one"></span>
-                <span class="orbit orbit-two"></span>
-                <span class="orbit-star">✳</span>
-                <span class="orbit-caption">A LITTLE<br>MORE LITE</span>
-            </div>
             <div class="masthead-foot">
                 <span>OFFICIAL OFFER STORE</span>
                 <span id="feed-count">상품 불러오는 중</span>
@@ -44,34 +28,12 @@
         </section>
 
         <section class="news-section shop-section" aria-labelledby="offers-heading">
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">CHOOSE YOUR OFFER</p>
-                    <h2 id="offers-heading">상점 오퍼</h2>
-                </div>
-                <div class="news-controls">
-                    <label class="search-field">
-                        <span class="sr-only">오퍼 검색</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
-                        <input id="offer-search" type="search" placeholder="오퍼 검색" autocomplete="off">
-                    </label>
-                    <button class="refresh-button" id="refresh-offers" type="button" aria-label="오퍼 새로고침" title="오퍼 새로고침">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"></path><path d="M5.7 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.3-3"></path></svg>
-                    </button>
-                </div>
-            </div>
             <div id="category-filters" class="category-filters" role="group" aria-label="오퍼 카테고리"></div>
             <div id="offer-list" class="offer-list" aria-live="polite" aria-busy="true">
                 <div class="loading-state"><span class="loading-mark">✳</span><span>오퍼를 불러오고 있어요</span></div>
             </div>
         </section>
     </main>
-
-    <footer class="site-footer">
-        <a class="footer-brand" href="#top">LITESTARS <span>OFFER STORE</span></a>
-        <span>마음에 드는 오퍼를 골라보세요.</span>
-        <span class="footer-year">© LITESTARS</span>
-    </footer>
 
     <dialog class="offer-dialog" id="offer-detail" aria-labelledby="detail-title">
         <div class="dialog-topline">
